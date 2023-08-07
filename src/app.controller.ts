@@ -22,8 +22,7 @@ export class AppController {
       // throw new Error('id must be greater than 32');
       throw new BadRequestException('id must be greater than 32');
     }
-    return id;
-    // return this.appService.getHello();
+    return `${this.appService.getHello()} and id: ${id}`;
   }
 
   @UsePipes(new ValidationPipe())
