@@ -10,4 +10,19 @@ export class AppController {
     console.log(typeReport);
     return data.report.filter((report) => report.type === reportType);
   }
+
+  @Get(':id')
+  getReportById(
+    @Param('typeReport') typeReport: string,
+    @Param('id') id: string,
+  ) {
+    const reportType =
+      typeReport === 'income' ? EnumReportType.INCOME : EnumReportType.EXPENSE;
+    return data.report
+      .filter((report) => report.type === reportType)
+      .find((report) => report.id === id);
+    return data.report.filter(
+      (report) => report.type === reportType && report.id === id,
+    );
+  }
 }
