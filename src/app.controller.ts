@@ -4,10 +4,11 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
-import { EnumReportType, data } from './data';
+import { EnumReportType } from './data';
 import { AppService } from './app.service';
 
 @Controller('report/:typeReport')
@@ -25,8 +26,9 @@ export class AppController {
   @Get(':id')
   getReportById(
     @Param('typeReport') typeReport: string,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
   ) {
+    console.log(id, typeof id);
     const reportType =
       typeReport === 'income' ? EnumReportType.INCOME : EnumReportType.EXPENSE;
     return this.appService.getReportById(reportType, id);
@@ -45,7 +47,7 @@ export class AppController {
   @Put(':id')
   updateReport(
     @Param('typeReport') typeReport: string,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() body: { source: string; amount: number },
   ) {
     const reportType =
@@ -54,7 +56,7 @@ export class AppController {
   }
 
   @Delete(':id')
-  deleteReport(@Param('id') id: string) {
+  deleteReport(@Param('id', ParseUUIDPipe) id: string) {
     return this.appService.deleteReport(id);
   }
 }
