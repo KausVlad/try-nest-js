@@ -9,15 +9,19 @@ import {
 } from '@nestjs/common';
 import { EnumReportType, data } from './data';
 import { v4 as uuid } from 'uuid';
+import { AppService } from './app.service';
 
 @Controller('report/:typeReport')
 export class AppController {
+  constructor(private readonly appService: AppService) {}
+
   @Get()
   getAllReports(@Param('typeReport') typeReport: string) {
     const reportType =
       typeReport === 'income' ? EnumReportType.INCOME : EnumReportType.EXPENSE;
-    console.log(typeReport);
-    return data.report.filter((report) => report.type === reportType);
+
+    return this.appService.getAllReports(reportType);
+    // return data.report.filter((report) => report.type === reportType);
   }
 
   @Get(':id')
@@ -27,12 +31,13 @@ export class AppController {
   ) {
     const reportType =
       typeReport === 'income' ? EnumReportType.INCOME : EnumReportType.EXPENSE;
-    return data.report
-      .filter((report) => report.type === reportType)
-      .find((report) => report.id === id);
-    return data.report.filter(
-      (report) => report.type === reportType && report.id === id,
-    );
+    return this.appService.getReportById(reportType, id);
+    // return data.report
+    //   .filter((report) => report.type === reportType)
+    //   .find((report) => report.id === id);
+    // return data.report.filter(
+    //   (report) => report.type === reportType && report.id === id,
+    // );
   }
 
   @Post()
