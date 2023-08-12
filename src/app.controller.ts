@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { EnumReportType, data } from './data';
 import { v4 as uuid } from 'uuid';
 
@@ -73,5 +81,18 @@ export class AppController {
     };
 
     return data.report[reportIndex];
+  }
+
+  @Delete(':id')
+  deleteReport(
+    @Param('typeReport') typeReport: string,
+    @Param('id') id: string,
+  ) {
+    const reportIndex = data.report.findIndex((report) => report.id === id);
+
+    if (reportIndex === -1) return null;
+
+    const deletedReport = data.report.splice(reportIndex, 1);
+    return deletedReport[0];
   }
 }
