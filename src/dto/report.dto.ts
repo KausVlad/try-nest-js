@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   IsNotEmpty,
   IsNumber,
@@ -5,6 +6,7 @@ import {
   IsPositive,
   IsString,
 } from 'class-validator';
+import { EnumReportType } from 'src/data';
 
 export class CreateReportDto {
   @IsString()
@@ -26,4 +28,19 @@ export class UpdateReportDto {
   @IsNumber()
   @IsPositive()
   amount: number;
+}
+
+export class ResponseReportDto {
+  id: string;
+  source: string;
+  amount: number;
+  created_at: Date;
+
+  @Exclude()
+  updated_at: Date;
+  type: EnumReportType;
+
+  constructor(partial: Partial<ResponseReportDto>) {
+    Object.assign(this, partial);
+  }
 }

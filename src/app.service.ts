@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EnumReportType, data } from './data';
 import { v4 as uuid } from 'uuid';
+import { ResponseReportDto } from './dto/report.dto';
 
 interface IReport {
   source: string;
@@ -14,17 +15,22 @@ interface IUpdateReport {
 
 @Injectable()
 export class AppService {
-  getAllReports(reportType: EnumReportType) {
-    return data.report.filter((report) => report.type === reportType);
+  getAllReports(reportType: EnumReportType): ResponseReportDto[] {
+    return data.report
+      .filter((report) => report.type === reportType)
+      .map((report) => new ResponseReportDto(report));
   }
 
   getReportById(reportType: EnumReportType, id: string) {
-    return data.report
+    const report = data.report
       .filter((report) => report.type === reportType)
       .find((report) => report.id === id);
     // return data.report.filter(
     //   (report) => report.type === reportType && report.id === id,
     // );
+    if (!report) return;
+
+    return new ResponseReportDto(report);
   }
 
   crateReport(reportType: EnumReportType, { source, amount }: IReport) {
@@ -38,7 +44,7 @@ export class AppService {
     };
 
     data.report.push(newReport);
-    return newReport;
+    return new ResponseReportDto(newReport);
   }
 
   updateReport(reportType: EnumReportType, id: string, body: IUpdateReport) {
@@ -59,7 +65,7 @@ export class AppService {
       updated_at: new Date(),
     };
 
-    return data.report[reportIndex];
+    return new ResponseReportDto(data.report[reportIndex]);
   }
 
   deleteReport(id: string) {
@@ -68,6 +74,6 @@ export class AppService {
     if (reportIndex === -1) return null;
 
     const deletedReport = data.report.splice(reportIndex, 1);
-    return deletedReport[0];
+    return new ResponseReportDto(deletedReport[0]);
   }
 }

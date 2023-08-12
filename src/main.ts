@@ -8,6 +8,10 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // whitelist: true забезпечує, що лише ті дані, які відповідають обмеженням валідації, будуть передані до вашого контролера, і всі інші властивості будуть відкинуті.
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
   await app.listen(3000);
