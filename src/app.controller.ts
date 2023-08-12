@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseEnumPipe,
   ParseUUIDPipe,
   Post,
   Put,
@@ -16,7 +17,9 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getAllReports(@Param('typeReport') typeReport: string) {
+  getAllReports(
+    @Param('typeReport', new ParseEnumPipe(EnumReportType)) typeReport: string,
+  ) {
     const reportType =
       typeReport === 'income' ? EnumReportType.INCOME : EnumReportType.EXPENSE;
 
@@ -25,7 +28,7 @@ export class AppController {
 
   @Get(':id')
   getReportById(
-    @Param('typeReport') typeReport: string,
+    @Param('typeReport', new ParseEnumPipe(EnumReportType)) typeReport: string,
     @Param('id', ParseUUIDPipe) id: string,
   ) {
     console.log(id, typeof id);
@@ -37,7 +40,7 @@ export class AppController {
   @Post()
   crateReport(
     @Body() { amount, source }: { source: string; amount: number },
-    @Param('typeReport') typeReport: string,
+    @Param('typeReport', new ParseEnumPipe(EnumReportType)) typeReport: string,
   ) {
     const reportType =
       typeReport === 'income' ? EnumReportType.INCOME : EnumReportType.EXPENSE;
@@ -46,7 +49,7 @@ export class AppController {
 
   @Put(':id')
   updateReport(
-    @Param('typeReport') typeReport: string,
+    @Param('typeReport', new ParseEnumPipe(EnumReportType)) typeReport: string,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() body: { source: string; amount: number },
   ) {

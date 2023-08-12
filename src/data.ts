@@ -25,7 +25,7 @@ export const data: IData = {
       type: EnumReportType.INCOME,
     },
     {
-      id: '2',
+      id: 'bc8fd551-461e-4785-9820-b5fe688afa2f',
       source: 'test1',
       amount: 200,
       created_at: new Date(),
