@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { EnumReportType } from './data';
 import { AppService } from './app.service';
+import { CreateReportDto } from './dto/report.dto';
 
 @Controller('report/:typeReport')
 export class AppController {
@@ -39,7 +40,7 @@ export class AppController {
 
   @Post()
   crateReport(
-    @Body() { amount, source }: { source: string; amount: number },
+    @Body() { amount, source }: CreateReportDto,
     @Param('typeReport', new ParseEnumPipe(EnumReportType)) typeReport: string,
   ) {
     const reportType =
