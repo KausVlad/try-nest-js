@@ -7,6 +7,11 @@ interface IReport {
   amount: number;
 }
 
+interface IUpdateReport {
+  source?: string;
+  amount?: number;
+}
+
 @Injectable()
 export class AppService {
   getAllReports(reportType: EnumReportType) {
@@ -36,7 +41,7 @@ export class AppService {
     return newReport;
   }
 
-  updateReport(reportType: EnumReportType, id: string, body: IReport) {
+  updateReport(reportType: EnumReportType, id: string, body: IUpdateReport) {
     const reportToUpdate = data.report
       .filter((report) => report.type === reportType)
       .find((report) => report.id === id);

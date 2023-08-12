@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { EnumReportType } from './data';
 import { AppService } from './app.service';
-import { CreateReportDto } from './dto/report.dto';
+import { CreateReportDto, UpdateReportDto } from './dto/report.dto';
 
 @Controller('report/:typeReport')
 export class AppController {
@@ -52,7 +52,7 @@ export class AppController {
   updateReport(
     @Param('typeReport', new ParseEnumPipe(EnumReportType)) typeReport: string,
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() body: { source: string; amount: number },
+    @Body() body: UpdateReportDto,
   ) {
     const reportType =
       typeReport === 'income' ? EnumReportType.INCOME : EnumReportType.EXPENSE;
