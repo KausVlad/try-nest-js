@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { EnumReportType, data } from './data';
 import { v4 as uuid } from 'uuid';
 
@@ -46,5 +46,32 @@ export class AppController {
 
     data.report.push(newReport);
     return newReport;
+  }
+
+  @Put(':id')
+  updateReport(
+    @Param('typeReport') typeReport: string,
+    @Param('id') id: string,
+    @Body() body: { source: string; amount: number },
+  ) {
+    const reportType =
+      typeReport === 'income' ? EnumReportType.INCOME : EnumReportType.EXPENSE;
+    const reportToUpdate = data.report
+      .filter((report) => report.type === reportType)
+      .find((report) => report.id === id);
+    if (!reportToUpdate) {
+      return null;
+    }
+
+    const reportIndex = data.report.findIndex(
+      (report) => report.id === reportToUpdate.id,
+    );
+
+    data.report[reportIndex] = {
+      ...data.report[reportIndex],
+      ...body,
+    };
+
+    return data.report[reportIndex];
   }
 }
