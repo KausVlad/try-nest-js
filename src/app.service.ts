@@ -17,6 +17,9 @@ export class AppService {
     return data.report
       .filter((report) => report.type === reportType)
       .find((report) => report.id === id);
+    // return data.report.filter(
+    //   (report) => report.type === reportType && report.id === id,
+    // );
   }
 
   crateReport(reportType: EnumReportType, { source, amount }: IReport) {
@@ -26,7 +29,40 @@ export class AppService {
       amount,
       created_at: new Date(),
       updated_at: new Date(),
-      type: EnumReportType.INCOME,
+      type: reportType,
     };
+
+    data.report.push(newReport);
+    return newReport;
+  }
+
+  updateReport(reportType: EnumReportType, id: string, body: IReport) {
+    const reportToUpdate = data.report
+      .filter((report) => report.type === reportType)
+      .find((report) => report.id === id);
+    if (!reportToUpdate) {
+      return null;
+    }
+
+    const reportIndex = data.report.findIndex(
+      (report) => report.id === reportToUpdate.id,
+    );
+
+    data.report[reportIndex] = {
+      ...data.report[reportIndex],
+      ...body,
+      updated_at: new Date(),
+    };
+
+    return data.report[reportIndex];
+  }
+
+  deleteReport(id: string) {
+    const reportIndex = data.report.findIndex((report) => report.id === id);
+
+    if (reportIndex === -1) return null;
+
+    const deletedReport = data.report.splice(reportIndex, 1);
+    return deletedReport[0];
   }
 }
