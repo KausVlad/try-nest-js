@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { EnumReportType, data } from './data';
+import { EnumReportType, data } from 'src/data';
 import { v4 as uuid } from 'uuid';
-import { ResponseReportDto } from './dto/report.dto';
+import { ResponseReportDto } from 'src/dto/report.dto';
 
 interface IReport {
   source: string;
@@ -14,7 +14,7 @@ interface IUpdateReport {
 }
 
 @Injectable()
-export class AppService {
+export class ReportService {
   getAllReports(reportType: EnumReportType): ResponseReportDto[] {
     return data.report
       .filter((report) => report.type === reportType)
