@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import {
   IsNotEmpty,
   IsNumber,
@@ -34,10 +34,18 @@ export class ResponseReportDto {
   id: string;
   source: string;
   amount: number;
+
+  @Expose({ name: 'createdAt' })
+  transformFromCreatedAt() {
+    return this.created_at;
+  }
+
+  @Exclude()
   created_at: Date;
 
   @Exclude()
   updated_at: Date;
+
   type: EnumReportType;
 
   constructor(partial: Partial<ResponseReportDto>) {
